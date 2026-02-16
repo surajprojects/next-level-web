@@ -1,5 +1,6 @@
 "use client";
 
+import "dotenv/config";
 import { useState } from "react";
 import { Role } from "@/db/generated/prisma/enums";
 
@@ -18,7 +19,7 @@ export default function Home() {
   ) => {
     try {
       const result = await fetch(
-        "http://localhost:3000/api/protected",
+        "https://next-level-web-three.vercel.app/api/protected",
         !removeRole
           ? {
               headers: {

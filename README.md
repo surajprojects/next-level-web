@@ -2,16 +2,17 @@
 
 # Next-Level Web (Assignment)
 
-A modern Next.js application demonstrating role-based access control (RBAC) patterns with Prisma ORM and PostgreSQL. This project showcases clean architecture principles and separation of concerns for building scalable web applications.
+A modern Nextjs application demonstrating role-based access control (RBAC) patterns with Prisma ORM and PostgreSQL.
+This project showcases clean architecture principles and separation of concerns for building scalable web applications.
 
-- **Frontend**: Interactive React component with role-switching buttons to test protected endpoints
-- **Backend**: Protected API route that validates user roles before granting access
-- **Database**: PostgreSQL with Prisma ORM for type-safe database operations
-- **Architecture**: Centralized RBAC logic for maintainability and consistency
+- **Frontend** Interactive React component with role-switching buttons to test protected endpoints
+- **Backend** Protected API route that validates user roles before granting access
+- **Database** PostgreSQL with Prisma ORM for type-safe database operations
+- **Architecture** Centralized RBAC logic for maintainability and consistency
 
 ## Key Features
 
-- Role-based access control with two roles: `USER` and `ADMIN`
+- Role-based access control with two roles - `USER` and `ADMIN`
 - Protected API endpoint that enforces role-based authorization
 - Type-safe database queries with Prisma
 - Clean separation between business logic and route handlers
@@ -22,33 +23,33 @@ A modern Next.js application demonstrating role-based access control (RBAC) patt
 
 ### Why Next.js App Router?
 
-The App Router provides several advantages over the Pages Router:
+The App Router provides several advantages over the Pages Router
 
-- **Server Components**: Built-in support for server-side rendering with `"use server"` directives
-- **Cleaner API Routes**: Simpler file-based routing for API endpoints
-- **Better Performance**: Native support for streaming and incremental static regeneration
-- **Modern React Integration**: Direct integration with React 19 features
+- **Server Components** Built-in support for server-side rendering with `"use server"` directives
+- **Cleaner API Routes** Simpler file-based routing for API endpoints
+- **Better Performance** Native support for streaming and incremental static regeneration
+- **Modern React Integration** Direct integration with React 19 features
 
 ### Why Prisma?
 
-Prisma offers significant benefits for database operations:
+Prisma offers significant benefits for database operations
 
-- **Type Safety**: Auto-generated TypeScript types from the schema prevent runtime errors
-- **Developer Experience**: Intuitive schema definition and migrations
-- **Query Builder**: Ergonomic API that reads like plain JavaScript
-- **Multi-Adapter Support**: Easy switching between different databases (PostgreSQL, MySQL, SQLite, etc.)
-- **Generated Prisma Client**: No boilerplate code needed—just import and use
+- **Type Safety** Auto-generated TypeScript types from the schema prevent runtime errors
+- **Developer Experience** Intuitive schema definition and migrations
+- **Query Builder** Ergonomic API that reads like plain JavaScript
+- **Multi-Adapter Support** Easy switching between different databases (PostgreSQL, MySQL, SQLite, etc.)
+- **Generated Prisma Client** No boilerplate code needed—just import and use
 
 ### Why Centralized RBAC?
 
-The `hasAccess()` utility function in `src/lib/rbac.ts` is the single source of truth for authorization:
+The `hasAccess()` utility function in `src/lib/rbac.ts` is the single source of truth for authorization
 
-**Benefits:**
+**Benefits**
 
-- **Security**: All role checks go through one function, reducing risk of inconsistencies
-- **Reusability**: Same logic can be used across API routes, server actions, and middleware
-- **Maintainability**: Changes to authorization rules only need to happen in one place
-- **Testability**: Easy to unit test authorization logic in isolation
+- **Security** All role checks go through one function, reducing risk of inconsistencies
+- **Reusability** Same logic can be used across API routes, server actions, and middleware
+- **Maintainability** Changes to authorization rules only need to happen in one place
+- **Testability** Easy to unit test authorization logic in isolation
 
 **Why not check roles inline?**
 
@@ -81,7 +82,7 @@ src/
 
 ## Database Schema
 
-The application uses a simple User model with role-based authorization:
+The application uses a simple User model with role-based authorization
 
 ```prisma
 enum Role {
@@ -92,7 +93,7 @@ enum Role {
 model User {
   id   String @id @default(uuid())
   name String
-  role Role   # User's role: USER or ADMIN
+  role Role   # User's role USER or ADMIN
 }
 ```
 
@@ -109,57 +110,57 @@ model User {
 
 ### Testing the Protected Endpoint
 
-The homepage provides two buttons to test role-based access:
+The homepage provides two buttons to test role-based access
 
-1. **Request as Admin**: Sends a request with the `ADMIN` role
-   - ✅ Succeeds and returns: `"Secret admin data!!!"`
-2. **Request as User**: Sends a request with the `USER` role
-   - ❌ Fails with `403 Forbidden` and returns: `"Forbidden!!!"`
+1. **Request as Admin** Sends a request with the `ADMIN` role
+   - Succeeds and returns `"Secret admin data!!!"`
+2. **Request as User** Sends a request with the `USER` role
+   - Fails with `403 Forbidden` and returns `"Forbidden!!!"`
 
 ## Tradeoffs & Design Decisions
 
 ### Simplicity Over Full Authentication
 
-**Decision**: Use request headers instead of JWT or session-based auth
+**Decision** Use request headers instead of JWT or session-based auth
 
-**Tradeoff**:
+**Tradeoff**
 
-- **Pro**: Focus on RBAC patterns without auth complexity
-- **Pro**: Easier to understand and test
-- **Con**: Not suitable for production (no session management)
-- **Con**: No persistent authentication across requests
+- **Pro** Focus on RBAC patterns without auth complexity
+- **Pro** Easier to understand and test
+- **Con** Not suitable for production (no session management)
+- **Con** No persistent authentication across requests
 
-**For Production**: Integrate a proper auth system (NextAuth.js, Auth0, Firebase Auth) and extract roles from authenticated sessions.
+**For Production** Integrate a proper auth system (NextAuth.js, Auth0, Firebase Auth) and extract roles from authenticated sessions.
 
 ### Client-Side Role Simulation
 
-**Decision**: Set roles via request headers from the frontend
+**Decision** Set roles via request headers from the frontend
 
-**Tradeoff**:
+**Tradeoff**
 
-- **Pro**: Simple demo of role-based logic
-- **Pro**: No database setup required to test
-- **Con**: Insecure (users could spoof roles)
-- **Con**: Doesn't demonstrate real user management
+- **Pro** Simple demo of role-based logic
+- **Pro** No database setup required to test
+- **Con** Insecure (users could spoof roles)
+- **Con** Doesn't demonstrate real user management
 
-**For Production**: Retrieve user roles from the database or auth provider, never trust client-supplied role claims.
+**For Production** Retrieve user roles from the database or auth provider, never trust client-supplied role claims.
 
 ### No Full User Management System
 
-**Decision**: Keep the project focused on RBAC patterns
+**Decision** Keep the project focused on RBAC patterns
 
-**Scope Intentionally Excludes**:
+**Scope Intentionally Excludes**
 
 - User registration and login flows
 - Password hashing and validation
 - User profile management
 - Session persistence
 
-**Why**: The goal is to demonstrate clean RBAC architecture, not build a complete auth system. These features can be added as extensions.
+**Why** The goal is to demonstrate clean RBAC architecture, not build a complete auth system. These features can be added as extensions.
 
 ## Deployment
 
-This web app is deployed using [Vercel](https://vercel.com/) by Tiger. You can access the live version here: [Next Level Web](https://nextlevelweb.vercel.app)
+This web app is deployed using [Vercel](https://vercel.com/) by Tiger. You can access the live version here [Next Level Web](https://nextlevelweb.vercel.app)
 
 ## License
 
